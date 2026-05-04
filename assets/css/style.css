@@ -219,3 +219,38 @@ input.form-control::placeholder {
 .custom-input::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
+
+/* Dropdown Menu */
+.dropdown-menu {
+    background-color: #1a1a1a; 
+    border: 1px solid #333;
+    border-radius: 12px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+    margin-top: 50px !important; 
+    padding: 8px;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.dropdown-item {
+    color: #ddd !important;
+    border-radius: 8px;
+    padding: 8px 16px;
+    transition: 0.2s;
+}
+.navbar-nav, .nav-item {
+    list-style: none !important;
+}
+
+.dropdown-item:hover {
+    background-color: #ffc107 !important; 
+    color: #000 !important; 
+}
+
+.dropdown-menu {
+    list-style: none !important; 
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
