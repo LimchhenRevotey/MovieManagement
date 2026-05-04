@@ -1,35 +1,78 @@
+// Get Genre List
+getGenreList();
+function getGenreList() {
+    const genreMenuList = document.getElementById('genreMenuList');
+    const genreSelect = document.getElementById('genre');
+    fetch('https://69f2cbc1b15130b9735329a9.mockapi.io/api/genres')
+        .then(response => response.json())
+        .then(genres => {            
+            genreMenuList.innerHTML = `
+                <li><a class="dropdown-item" href="#" onclick="getAllMovies()">All Genres</a></li>
+                <li><hr class="dropdown-divider"></li>
+            `;
+            genres.forEach(genre => {
+                genreMenuList.innerHTML += `
+                    <li><a class="dropdown-item" href="#" onclick="filterMovieByGenre('${genre.name}')">${genre.name}</a></li>
+                `;
+                genreSelect.innerHTML += `<option value="${genre.name}">${genre.name}</option>`;
+            });
+        });
+}
+
+// Filter Movie By Genre
+async function filterMovieByGenre(genreName) {
+    await fetch('https://69f2cbc1b15130b9735329a9.mockapi.io/api/movies')
+        .then(response => response.json())
+        .then(movies => {
+            const filteredMovies = movies.filter(movie => movie.genre === genreName);
+            displayMovies(filteredMovies);
+        });
+}
+
+// Display Movies
+function displayMovies(movies) {
+    const movieContainer = document.getElementById('movieCard');
+    movieContainer.innerHTML = "";
+
+    if (movies.length === 0) {
+        movieContainer.innerHTML = `<div class="col-12 text-center text-white"><h3>No movies found in this genre.</h3></div>`;
+        return;
+    }
+
+    movies.forEach(movie => {
+        const myCard = `
+            <div class="col-6 col-md-4 col-xl-3">
+                <div class="movie-card">
+                    <div class="card-actions">
+                        <button class="btn-action edit" onclick="openEditModal(${movie.id})"><i class="bi bi-pencil-square"></i></button>
+                        <button class="btn-action delete" onclick="openDeleteModal(${movie.id}, '${movie.title}')"><i class="bi bi-trash"></i></button>
+                    </div>
+                    <div onclick="detailMovie(${movie.id})" style="cursor: pointer;">
+                        <div class="poster-wrapper" style="position: relative; width: 100%; height: 350px; overflow: hidden;">
+                            <img src="${movie.poster}" alt="${movie.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="rating-badge" style="position: absolute; top: 10px; right: 10px;">
+                                <i class="bi bi-star-fill me-1"></i>${movie.rating}
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <h6 class="fw-bold mb-1 text-truncate">${movie.title}</h6>
+                            <p class="small text-white mb-0">${movie.genre}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        movieContainer.innerHTML += myCard;
+    });
+}
+
 // get Movies 
 getAllMovies();
 async function getAllMovies() {
     await fetch(' https://69f2cbc1b15130b9735329a9.mockapi.io/api/movies')
     .then(response => response.json())
     .then(movies => {
-        movies.forEach(movie => {
-            // console.log(movie);
-            const myCard = `
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="movie-card">
-                            <div class="card-actions">
-                                <button class="btn-action edit" onclick="openEditModal(${movie.id})"><i class="bi bi-pencil-square"></i></button>
-                                <button class="btn-action delete" onclick="openDeleteModal(${movie.id}, '${movie.title}')"><i class="bi bi-trash" ></i></button>
-                            </div>
-                            <div onclick="detailMovie(${movie.id})" style="cursor: pointer;">
-                                <div class="poster-wrapper" style="position: relative; width: 100%; height: 350px; overflow: hidden;">
-                                    <img src="${movie.poster}" alt="${movie.title}" style="width: 100%; height: 100%; object-fit: cover;">
-                                    <div class="rating-badge" style="position: absolute; top: 10px; right: 10px;">
-                                        <i class="bi bi-star-fill me-1"></i>${movie.rating}
-                                    </div>
-                                </div>
-                                <div class="p-3">
-                                    <h6 class="fw-bold mb-1 text-truncate">${movie.title}</h6>
-                                    <p class="small text-white mb-0">${movie.genre}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            document.getElementById('movieCard').innerHTML += myCard;
-        });
+        displayMovies(movies);
     });
 }
 
@@ -105,17 +148,6 @@ function saveMovie() {
     } else if (modalTitle === "Edit Movie") {
         updateMovie();
     }
-}
-// Get Genre List
-function getGenreList() {
-    const genreSelect = document.getElementById('genre');
-    fetch('https://69f2cbc1b15130b9735329a9.mockapi.io/api/genres')
-        .then(response => response.json())
-        .then(genres => {
-            genres.forEach(genre => {
-                genreSelect.innerHTML += `<option value="${genre.name}">${genre.name}</option>`;
-            });
-        });
 }
 
 // detail Movie 
@@ -236,7 +268,7 @@ async function createMovie() {
             }
         })
 }
-getGenreList();
+
 
 // Update Movie 
 async function updateMovie() {
