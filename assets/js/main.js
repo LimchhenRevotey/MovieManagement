@@ -38,7 +38,6 @@ function displayMovies(movies) {
         movieContainer.innerHTML = `<div class="col-12 text-center text-white"><h3>No movies found in this genre.</h3></div>`;
         return;
     }
-
     movies.forEach(movie => {
         const myCard = `
             <div class="col-6 col-md-4 col-xl-3">
@@ -123,6 +122,7 @@ async function openEditModal(id) {
     clearAllErrors();
     movieModal.show();
 }
+
 // Disabled Update Button
 function checkIfDataChanged() {
     const modalTitle = document.getElementById('modalTitle').textContent;
@@ -140,6 +140,7 @@ function checkIfDataChanged() {
         currentData.poster !== originalMovieData.poster;
     document.getElementById('btnSave').disabled = !isChanged;
 }
+
 // Save button  
 function saveMovie() {
     const modalTitle = document.getElementById('modalTitle').textContent;
@@ -204,9 +205,9 @@ function validateMovieForm() {
         showError('releaseDate', 'Please select a release date!');
         isValid = false;
     }
-
     return isValid;
 }
+
 // Show error
 function showError(inputId, message) {
     const input = document.getElementById(inputId);
@@ -269,7 +270,6 @@ async function createMovie() {
         })
 }
 
-
 // Update Movie 
 async function updateMovie() {
     if (!validateMovieForm()) return;
@@ -291,8 +291,7 @@ async function updateMovie() {
             } else {
                 alert('Failed to update movie. Please try again.');
             }
-        });
-    
+        });   
 }
 
 // close modal 
