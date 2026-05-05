@@ -254,3 +254,36 @@ input.form-control::placeholder {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+/* រចនាប៊ូតុង Pagination ទូទៅ */
+.pagination .page-item .page-link {
+    background-color: #1a1a1a; /* ពណ៌ខ្មៅងងឹត */
+    color: #ddd;               /* ពណ៌អក្សរប្រផេះស្រាល */
+    border: 1px solid #333;    /* បន្ទាត់ព្រំដែន */
+    padding: 8px 16px;
+    margin: 0 4px;
+    border-radius: 8px;        /* ធ្វើឱ្យប៊ូតុងមូលជ្រុង */
+    transition: all 0.3s ease;
+    box-shadow: none;
+}
+
+/* ពេល Hover លើប៊ូតុង */
+.pagination .page-item .page-link:hover {
+    background-color: #333;
+    color: #ffc107;            /* អក្សរដូរជាពណ៌មាស */
+    border-color: #ffc107;
+}
+
+/* --- ចំណុចដែលបងចង់បាន៖ Style ពេលស្ថិតនៅទំព័រនោះ (Active Page) --- */
+.pagination .page-item.active .page-link {
+    background-color: #ffc107 !important; /* ពណ៌មាស */
+    color: #000 !important;               /* អក្សរពណ៌ខ្មៅឱ្យច្បាស់ */
+    border-color: #ffc107 !important;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.4); /* ដាក់ពន្លឺជុំវិញប៊ូតុង */
+}
+
+/* រចនាប៊ូតុង Next/Previous (បើមាន) */
+.pagination .page-item:first-child .page-link,
+.pagination .page-item:last-child .page-link {
+    border-radius: 8px;
+}

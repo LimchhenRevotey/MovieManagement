@@ -1,3 +1,6 @@
+let allMovies = [];
+let currentPage = 1;
+let rowsPerPage = 8;
 // Get Genre List
 getGenreList();
 function getGenreList() {
@@ -24,16 +27,29 @@ async function filterMovieByGenre(genreName) {
     await fetch('https://69f2cbc1b15130b9735329a9.mockapi.io/api/movies')
         .then(response => response.json())
         .then(movies => {
-            const filteredMovies = movies.filter(movie => movie.genre === genreName);
-            displayMovies(filteredMovies);
+            allMovies = movies.filter(movie => movie.genre === genreName);
+            currentPage = 1;
+            displayPaginationMovies();
         });
+}
+
+// Start rating
+function getStars(rating) {
+    let starsHtml = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= Math.floor(rating)) {
+            starsHtml += '<i class="bi bi-star-fill text-warning me-1"></i>';
+        } else {
+            starsHtml += '<i class="bi bi-star text-secondary me-1"></i>';
+        }
+    }
+    return starsHtml;
 }
 
 // Display Movies
 function displayMovies(movies) {
     const movieContainer = document.getElementById('movieCard');
     movieContainer.innerHTML = "";
-
     if (movies.length === 0) {
         movieContainer.innerHTML = `<div class="col-12 text-center text-white"><h3>No movies found in this genre.</h3></div>`;
         return;
@@ -56,6 +72,9 @@ function displayMovies(movies) {
                         <div class="p-3">
                             <h6 class="fw-bold mb-1 text-truncate">${movie.title}</h6>
                             <p class="small text-white mb-0">${movie.genre}</p>
+                            <div class="movie-stars">
+                                ${getStars(movie.rating)}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,8 +90,42 @@ async function getAllMovies() {
     await fetch(' https://69f2cbc1b15130b9735329a9.mockapi.io/api/movies')
     .then(response => response.json())
     .then(movies => {
-        displayMovies(movies);
+        allMovies = movies;
+        displayPaginationMovies();
     });
+}
+
+// Pagination
+function displayPaginationMovies() {
+    const movieContainer = document.getElementById('movieCard');
+    movieContainer.innerHTML = "";
+    let start = (currentPage - 1) * rowsPerPage;
+    let end = start + rowsPerPage;
+    let paginatedItems = allMovies.slice(start, end);
+    displayMovies(paginatedItems); 
+    setupPagination();
+}
+function setupPagination() {
+    const paginationElement = document.getElementById('pagination');
+    paginationElement.innerHTML = "";
+
+    let pageCount = Math.ceil(allMovies.length / rowsPerPage);
+
+    for (let i = 1; i <= pageCount; i++) {
+        let li = document.createElement('li');
+        li.className = 'page-item';
+        if (i === currentPage) {
+            li.classList.add('active');
+        }
+        li.innerHTML = `<button class="page-link">${i}</button>`;
+        li.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentPage = i;
+            displayPaginationMovies();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        paginationElement.appendChild(li);
+    }
 }
 
 // Open Modal Create Movie
