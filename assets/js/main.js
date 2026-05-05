@@ -110,7 +110,6 @@ function setupPagination() {
     paginationElement.innerHTML = "";
 
     let pageCount = Math.ceil(allMovies.length / rowsPerPage);
-
     for (let i = 1; i <= pageCount; i++) {
         let li = document.createElement('li');
         li.className = 'page-item';
