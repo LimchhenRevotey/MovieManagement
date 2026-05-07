@@ -8,7 +8,7 @@ function detailMovie(id) {
     })
         .then(response => response.json())
         .then(detailMovie => {
-            console.log(detailMovie);
+            // console.log(detailMovie);
             const detailData = `
                 <button class=" back-btn btn btn-warning fw-bold" onclick="goBack()"><i class="bi bi-chevron-left me-2"></i>Back</button>
                 <div class="detail-header-img" style="background-image: url('${detailMovie.poster}'); position: relative; height: 400px; background-size: cover; background-position: center;">
