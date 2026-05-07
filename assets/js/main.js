@@ -211,12 +211,12 @@ function detailMovie(id) {
 // Get Movie Payload
 function getMoviePayload() {
     return {
-        title: document.getElementById('title').value,
-        description: document.getElementById('description').value,
-        genre: document.getElementById('genre').value,
+        title: document.getElementById('title').value.trim(),
+        description: document.getElementById('description').value.trim(),
+        genre: document.getElementById('genre').value.trim(),
         rating: Number(document.getElementById('rating').value),
         releaseDate: document.getElementById('releaseDate').value,
-        poster: document.getElementById('posterFile').value
+        poster: document.getElementById('posterFile').value.trim()
     };
 }
 
@@ -226,12 +226,12 @@ function validateMovieForm() {
     let isValid = true;
     clearAllErrors();
 
-    const title = document.getElementById('title').value;
-    const genre = document.getElementById('genre').value;
+    const title = document.getElementById('title').value.trim();
+    const genre = document.getElementById('genre').value.trim();
     const rating = document.getElementById('rating').value;
-    const description = document.getElementById('description').value;
+    const description = document.getElementById('description').value.trim();
     const releaseDate = document.getElementById('releaseDate').value;
-    const poster = document.getElementById('posterFile').value;
+    const poster = document.getElementById('posterFile').value.trim();
 
     if (!title) {
         showError('title', 'Please enter a movie title!');
@@ -312,12 +312,11 @@ async function createMovie() {
     })
         .then(response => response.json())
         .then(data => {
-            alert('Movie created successfully!');
             closeModal();
             if (data) {
                 reloadPage();
             } else {
-                alert('Failed to create movie. Please try again.');
+                console.log('Failed to create movie. Please try again.');
             }
         })
 }
@@ -336,12 +335,11 @@ async function updateMovie() {
     })
         .then(response => response.json())
         .then(data => {
-            alert('Movie updated successfully!');
             closeModal();
             if (data) {
                 reloadPage();
             } else {
-                alert('Failed to update movie. Please try again.');
+                console.log('Failed to update movie. Please try again.');
             }
         });   
 }
@@ -375,7 +373,6 @@ async function confirmDelete() {
     })
         .then(response => response.json())
         .then(data => {
-            alert('Movie deleted successfully!');
             reloadPage();
         })
         .catch((error) => {
